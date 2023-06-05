@@ -1,5 +1,5 @@
 export enum WeaponName {
-  AK47 = 'AK-47',
-  AWP = 'AWP',
+  AK47 = "AK-47",
+  AWP = "AWP",
   // Weitere Waffen...
 }

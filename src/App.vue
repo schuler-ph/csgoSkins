@@ -1,21 +1,33 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import SkinList from './components/SkinList.vue';
-import TheWelcome from './components/TheWelcome.vue'
+import { RouterLink, RouterView } from "vue-router"
+import HelloWorld from "./components/HelloWorld.vue"
+import SkinList from "./components/SkinList.vue"
+import TheWelcome from "./components/TheWelcome.vue"
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+    <img
+      alt="Vue logo"
+      class="logo"
+      src="./assets/logo.svg"
+      width="125"
+      height="125"
+    />
 
     <div class="wrapper">
       <HelloWorld msg="Hello, csgoSkins." />
+
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+      </nav>
     </div>
   </header>
 
   <main>
     <!-- <TheWelcome /> -->
-    <SkinList />
+    <RouterView />
   </main>
 </template>
 
