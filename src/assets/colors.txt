@@ -1,0 +1,4 @@
+Primary: #00BD7E
+BG: #181818
+Header: #FFFFFF
+Text: #ebebeba3
