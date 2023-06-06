@@ -1,17 +1,18 @@
 <template>
   <div>
     <h1 class="text-lg">CSGO Skins</h1>
+    <button @click="createVulcan">Create Vulcan</button>
     <div class="skinList">
-      <div v-for="skin in skinsList" :key="skin.name" class="skinListItem">
+      <div v-for="skin in skins" :key="skin.template.name" class="skinListItem">
         <img
-          :src="`src/assets/skins/${skin.image}`"
-          :alt="skin.name"
+          :src="skin.template.imageUrl"
+          :alt="skin.template.weaponName + skin.template.name"
           class="itemImage"
         />
-        <div>{{ skin.weaponName + " | " + skin.name }}</div>
-        <div>Rarity: {{ skin.rarity }}</div>
+        <div>{{ skin.template.weaponName + " | " + skin.template.name }}</div>
+        <div>Rarity: {{ skin.template.rarity }}</div>
         <div>Float: {{ skin.float }}</div>
-        <div>Grade: {{ skin.grade }}</div>
+        <div>Grade: {{ floatToGrade(skin.float) }}</div>
         <div>Price: {{ skin.price }}</div>
       </div>
     </div>
@@ -19,10 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
-import { skins, type Skin } from "../data/skins"
-
-const skinsList = ref<Skin[]>(skins)
+import { useSkinStore } from "@/stores/skinStore"
+import { floatToGrade } from "@/helper/floatHelper"
+const { skins, createVulcan } = useSkinStore()
 </script>
 
 <style scoped>
