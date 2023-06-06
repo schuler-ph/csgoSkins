@@ -35,3 +35,20 @@ export const raritySwitch = (rarity: string) => {
     return Rarity.CONTRABAND
   }
 }
+
+export const getRarityColor = (rarity: Rarity) => {
+  switch (rarity) {
+    case Rarity.RED:
+      return "#eb4b4b"
+    case Rarity.PINK:
+      return "#d32ee6"
+    case Rarity.PURPLE:
+      return "#8847ff"
+    case Rarity.BLUE:
+      return "#4b69ff"
+    case Rarity.LIGHTBLUE:
+      return "#5e98d9"
+    case Rarity.GRAY:
+      return "#b0c3d9"
+  }
+}

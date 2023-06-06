@@ -2,3 +2,11 @@ Primary: #00BD7E
 BG: #181818
 Header: #FFFFFF
 Text: #ebebeba3
+
+RSI: gold
+Covert: #eb4b4b
+Classified: #d32ee6
+Restricted: #8847ff
+Mil-spec: #4b69ff
+Industrial Grade: #5e98d9
+Consumer Grade: #b0c3d9

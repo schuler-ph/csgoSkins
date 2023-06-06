@@ -6,7 +6,11 @@ export const useCaseStore = defineStore(
   "caseStore",
   () => {
     const cases = ref<Case[]>([])
-    return { cases }
+    const findByShortName = (shortName: string) => {
+      return cases.value.find((obj) => obj.shortname === shortName)
+    }
+
+    return { cases, findByShortName }
   },
   {
     persist: true,

@@ -1,5 +1,5 @@
 import type { SkinTemplate } from "@/data/skins"
-import { weaponNameSwitch } from "@/data/enums/weaponName"
+import { reverseMapping } from "@/data/enums/weaponName"
 import * as cheerio from "cheerio"
 import { Rarity, raritySwitch } from "@/data/enums/rarity"
 import type { Case } from "@/data/case"
@@ -47,7 +47,13 @@ export const getCaseInfo = ($: cheerio.CheerioAPI): Case => {
 
   const caseImageSel =
     "body > div.container.main-content > div:nth-child(3) > div > div:nth-child(1) > a > img"
-  const caseImage = $(caseImageSel).attr("src")
+  let caseImage = $(caseImageSel).attr("src")
+
+  if (caseImage === undefined) {
+    const collectionImageSel =
+      "body > div.container.main-content > div:nth-child(3) > div > div:nth-child(1) > img"
+    caseImage = $(collectionImageSel).attr("src")
+  }
 
   return {
     name: caseName,
@@ -87,7 +93,7 @@ export const getSkinInfo = ($: cheerio.CheerioAPI, i: number) => {
   rarity = raritySwitch(rarity)
 
   const skinWeaponSel = "div > h3 > a:nth-child(1)"
-  const weaponName = weaponNameSwitch(skinHtml.find(skinWeaponSel).text())
+  const weaponName = reverseMapping(skinHtml.find(skinWeaponSel).text())
 
   const skinNameSel = "div > h3 > a:nth-child(2)"
   const name = skinHtml.find(skinNameSel).text()

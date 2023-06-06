@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1 class="text-lg">CSGO Skins</h1>
+    <h1 class="text-lg">Inventory</h1>
+    <button @click="clearInventory">Clear inventory</button>
     <div class="skinList">
       <div v-for="skin in skins" :key="skin.template.name" class="skinListItem">
         <img
@@ -22,13 +23,16 @@
 import { useInventoryStore } from "@/stores/inventoryStore"
 import { floatToGrade } from "@/helper/floatHelper"
 const { skins } = useInventoryStore()
+
+const clearInventory = () => {
+  skins.splice(0, skins.length)
+}
 </script>
 
 <style scoped>
 .skinList {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: 20px;
 }
 

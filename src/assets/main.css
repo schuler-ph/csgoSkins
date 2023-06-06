@@ -21,7 +21,7 @@ a,
     border-radius: 0.5rem;
   }
 }
-
+/* 
 @media (min-width: 1024px) {
   body {
     display: flex;
@@ -33,4 +33,4 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */

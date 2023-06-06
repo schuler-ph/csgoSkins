@@ -9,38 +9,80 @@ export enum WeaponName {
   SG553 = "SG 553",
   AUG = "AUG",
   MP7 = "MP7",
+  SSG08 = "SSG 08",
+  P90 = "P90",
+  FIVE7 = "Five-SeveN",
+  MP9 = "MP9",
+  DUALIES = "Dual Berettas",
+  NOVA = "Nova",
+  SCAR = "SCAR-20",
+  TEC9 = "Tec-9",
+  FAMAS = "FAMAS",
+  P250 = "P250",
+  CZ = "CZ75-Auto",
+  P2000 = "P2000",
+  NEGEV = "Negev",
+  UMP = "UMP-45",
+  MAG7 = "MAG-7",
+  SAWEDOFF = "Sawed-Off",
+  MAC10 = "MAC-10",
 }
 
-export const weaponNameSwitch = (weaponName: string) => {
-  const ak47Regex = /\bAK-47\b/i
-  const awpRegex = /\bAWP\b/i
-  const deagleRegex = /\bDesert Eagle\b/i
-  const glockRegex = /\bGlock-18\b/i
-  const uspRegex = /\bUSP-S\b/i
-  const m4a1Regex = /\bM4A1-S\b/i
-  const sg553Regex = /\bSG 553\b/i
-  const augRegex = /\bAUG\b/i
-  const mp7Regex = /\bMP7\b/i
-
-  if (ak47Regex.test(weaponName)) {
-    return WeaponName.AK47
-  } else if (awpRegex.test(weaponName)) {
-    return WeaponName.AWP
-  } else if (deagleRegex.test(weaponName)) {
-    return WeaponName.DEAGLE
-  } else if (glockRegex.test(weaponName)) {
-    return WeaponName.GLOCK
-  } else if (uspRegex.test(weaponName)) {
-    return WeaponName.USP
-  } else if (m4a1Regex.test(weaponName)) {
-    return WeaponName.M4A1
-  } else if (sg553Regex.test(weaponName)) {
-    return WeaponName.SG553
-  } else if (augRegex.test(weaponName)) {
-    return WeaponName.AUG
-  } else if (mp7Regex.test(weaponName)) {
-    return WeaponName.MP7
-  } else {
-    return WeaponName.UNKNOWN
+export const reverseMapping = (weaponName: string) => {
+  switch (weaponName) {
+    case "AK-47":
+      return WeaponName.AK47
+    case "AWP":
+      return WeaponName.AWP
+    case "Desert Eagle":
+      return WeaponName.DEAGLE
+    case "Glock-18":
+      return WeaponName.GLOCK
+    case "USP-S":
+      return WeaponName.USP
+    case "M4A1-S":
+      return WeaponName.M4A1
+    case "SG 553":
+      return WeaponName.SG553
+    case "AUG":
+      return WeaponName.AUG
+    case "MP7":
+      return WeaponName.MP7
+    case "SSG 08":
+      return WeaponName.SSG08
+    case "P90":
+      return WeaponName.P90
+    case "Five-SeveN":
+      return WeaponName.FIVE7
+    case "MP9":
+      return WeaponName.MP9
+    case "Dual Berettas":
+      return WeaponName.DUALIES
+    case "Nova":
+      return WeaponName.NOVA
+    case "SCAR-20":
+      return WeaponName.SCAR
+    case "Tec-9":
+      return WeaponName.TEC9
+    case "FAMAS":
+      return WeaponName.FAMAS
+    case "P250":
+      return WeaponName.P250
+    case "CZ75-Auto":
+      return WeaponName.CZ
+    case "P2000":
+      return WeaponName.P2000
+    case "Negev":
+      return WeaponName.NEGEV
+    case "UMP-45":
+      return WeaponName.UMP
+    case "MAG-7":
+      return WeaponName.MAG7
+    case "Sawed-Off":
+      return WeaponName.SAWEDOFF
+    case "MAC-10":
+      return WeaponName.MAC10
+    default:
+      return WeaponName.UNKNOWN
   }
 }
