@@ -2,6 +2,7 @@ import type { SkinTemplate } from "@/data/skins"
 import { weaponNameSwitch } from "@/data/enums/weaponName"
 import * as cheerio from "cheerio"
 import { Rarity, raritySwitch } from "@/data/enums/rarity"
+import type { Case } from "@/data/case"
 
 export const scrape = async (caseUrl: string) => {
   caseUrl = "http://localhost:4357/?url=" + caseUrl
@@ -38,11 +39,11 @@ export const scrape = async (caseUrl: string) => {
   return caseObj
 }
 
-export const getCaseInfo = ($: cheerio.CheerioAPI) => {
+export const getCaseInfo = ($: cheerio.CheerioAPI): Case => {
   const caseNameSel =
     "body > div.container.main-content > div:nth-child(3) > div > div.inline-middle.collapsed-top-margin > h1"
-  let caseName = $(caseNameSel).text()
-  caseName = caseName.replace(/[: ]/g, "").toLowerCase()
+  const caseName = $(caseNameSel).text()
+  const shortname = caseName.replace(/[: ]/g, "").toLowerCase()
 
   const caseImageSel =
     "body > div.container.main-content > div:nth-child(3) > div > div:nth-child(1) > a > img"
@@ -50,7 +51,8 @@ export const getCaseInfo = ($: cheerio.CheerioAPI) => {
 
   return {
     name: caseName,
-    image: caseImage,
+    shortname,
+    imageUrl: caseImage!,
     skins: [] as SkinTemplate[],
   }
 }

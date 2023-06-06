@@ -20,6 +20,7 @@ import TheWelcome from "./components/TheWelcome.vue"
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/caseOpening">Case Opening</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>

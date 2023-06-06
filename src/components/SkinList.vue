@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1 class="text-lg">CSGO Skins</h1>
-    <button @click="createVulcan">Create Vulcan</button>
     <div class="skinList">
       <div v-for="skin in skins" :key="skin.template.name" class="skinListItem">
         <img
@@ -20,9 +19,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSkinStore } from "@/stores/skinStore"
+import { useInventoryStore } from "@/stores/inventoryStore"
 import { floatToGrade } from "@/helper/floatHelper"
-const { skins, createVulcan } = useSkinStore()
+const { skins } = useInventoryStore()
 </script>
 
 <style scoped>
