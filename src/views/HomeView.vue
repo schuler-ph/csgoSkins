@@ -3,7 +3,7 @@ import SkinList from "@/components/SkinList.vue"
 </script>
 
 <template>
-  <main>
-    <SkinList />
-  </main>
+  <div>
+    <!-- <SkinList /> -->
+  </div>
 </template>

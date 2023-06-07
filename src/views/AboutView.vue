@@ -13,18 +13,34 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { scrape } from "../helper/scrapeHelper"
-import type { SkinInstance } from "@/data/skins"
 import { useInventoryStore } from "@/stores/inventoryStore"
 import { useCaseStore } from "@/stores/caseStore"
 
+import skinsJson from "./skins.json"
+
 const textInput = ref("https://csgostash.com/case/1/CS:GO-Weapon-Case")
-const { skins } = useInventoryStore()
-const { cases } = useCaseStore()
+// const { skins } = useInventoryStore()
+// const { cases } = useCaseStore()
 
-const handleInput = async () => {
-  const caseObj = await scrape(textInput.value)
-  cases.push(caseObj)
+let counter = 0
 
+const types: any[] = []
+
+for (const csee in skinsJson) {
+  console.log(skinsJson[csee])
+  counter++
+  if (counter === 4) {
+    break
+  }
+  // if (!types.includes(skinsJson[csee].description)) {
+  //   types.push(skinsJson[csee].description)
+  //   console.log(skinsJson[csee].description)
+  // }
+}
+
+const handleInput = () => {
+  // const caseObj = await scrape(textInput.value)
+  // cases.push(caseObj)
   // caseObj.skins.forEach((s) => {
   //   const instance: SkinInstance = {
   //     template: s,

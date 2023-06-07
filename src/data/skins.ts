@@ -1,12 +1,14 @@
 import { WeaponName } from "./enums/weaponName"
 import { Rarity } from "./enums/rarity"
-import { Grade } from "./enums/grade"
 
 export interface SkinTemplate {
+  id: string
   rarity: Rarity
   weaponName: WeaponName
+  maxFloat: number
+  minFloat: number
   name: string
-  imageUrl: string
+  image: string
 }
 
 export interface SkinInstance {

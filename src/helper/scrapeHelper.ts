@@ -1,13 +1,13 @@
 import type { SkinTemplate } from "@/data/skins"
-import { reverseMapping } from "@/data/enums/weaponName"
+import { getWeapon } from "@/data/enums/weaponName"
 import * as cheerio from "cheerio"
 import { Rarity, raritySwitch } from "@/data/enums/rarity"
-import type { Case } from "@/data/case"
+// import type { Case } from "@/data/case"
+import type { KnifeCollection } from "@/data/knifeCollection"
 
-export const scrape = async (caseUrl: string) => {
-  caseUrl = "http://localhost:4357/?url=" + caseUrl
-  let rawHtml = ""
-  await fetch(caseUrl)
+const professionalFetch = (url: string) => {
+  url = "http://localhost:4357/?url=" + url
+  return fetch(url)
     .then((res) => {
       if (res.ok) {
         return res.text()
@@ -15,31 +15,44 @@ export const scrape = async (caseUrl: string) => {
       throw new Error("Response faulty")
     })
     .then((html) => {
-      rawHtml = html
+      return html
     })
     .catch((err) => {
       console.log("Error ", err.message)
     })
+}
 
+export const scrape = async (caseUrl: string) => {
+  const rawHtml = await professionalFetch(caseUrl)
   const $ = cheerio.load(rawHtml!)
 
   const caseObj = getCaseInfo($)
   const length = getLength($)
   const rsiContained = getRsiContained($)
+  let knifeCollection = null
+
+  if (rsiContained) {
+    const knifeSel =
+      "body > div.container.main-content > div:nth-child(7) > div:nth-child(1) > div > div.details-link > a"
+    const knifeLink = $(knifeSel).attr("href")
+    knifeCollection = await getKnifeCollection(knifeLink!)
+  }
+
+  // caseObj.knifeCollection = knifeCollection
 
   for (let i = rsiContained ? 2 : 1; i <= length; i++) {
     const skin = getSkinInfo($, i)
     if (skin === null) {
       continue
     } else {
-      caseObj.skins.push(skin)
+      // caseObj.skins.push(skin)
     }
   }
 
   return caseObj
 }
 
-export const getCaseInfo = ($: cheerio.CheerioAPI): Case => {
+const getCaseInfo = ($: cheerio.CheerioAPI) => {
   const caseNameSel =
     "body > div.container.main-content > div:nth-child(3) > div > div.inline-middle.collapsed-top-margin > h1"
   const caseName = $(caseNameSel).text()
@@ -58,17 +71,18 @@ export const getCaseInfo = ($: cheerio.CheerioAPI): Case => {
   return {
     name: caseName,
     shortname,
+    knifeCollection: null,
     imageUrl: caseImage!,
     skins: [] as SkinTemplate[],
   }
 }
 
-export const getLength = ($: cheerio.CheerioAPI) => {
+const getLength = ($: cheerio.CheerioAPI) => {
   const skinsListSel = "body > div.container.main-content > div:nth-child(7)"
   return $(skinsListSel).children("div").length
 }
 
-export const getRsiContained = ($: cheerio.CheerioAPI) => {
+const getRsiContained = ($: cheerio.CheerioAPI) => {
   return (
     $(
       "body > div.container.main-content > div:nth-child(7) > div:nth-child(1) > div > div.quality.color-rare-item > p"
@@ -76,7 +90,7 @@ export const getRsiContained = ($: cheerio.CheerioAPI) => {
   )
 }
 
-export const getSkinInfo = ($: cheerio.CheerioAPI, i: number) => {
+const getSkinInfo = ($: cheerio.CheerioAPI, i: number) => {
   const skinSel =
     "body > div.container.main-content > div:nth-child(7) > div:nth-child(" +
     i +
@@ -93,7 +107,7 @@ export const getSkinInfo = ($: cheerio.CheerioAPI, i: number) => {
   rarity = raritySwitch(rarity)
 
   const skinWeaponSel = "div > h3 > a:nth-child(1)"
-  const weaponName = reverseMapping(skinHtml.find(skinWeaponSel).text())
+  const weaponName = getWeapon(skinHtml.find(skinWeaponSel).text())
 
   const skinNameSel = "div > h3 > a:nth-child(2)"
   const name = skinHtml.find(skinNameSel).text()
@@ -101,10 +115,55 @@ export const getSkinInfo = ($: cheerio.CheerioAPI, i: number) => {
   const skinImageSel = "div > a:nth-child(4) > img"
   const imageUrl = skinHtml.find(skinImageSel).attr("src")
 
-  return {
-    name,
-    rarity,
-    weaponName,
-    imageUrl,
-  } as SkinTemplate
+  // return {
+  //   name,
+  //   rarity,
+  //   weaponName,
+  //   imageUrl,
+  // } as SkinTemplate
+}
+
+const getKnifeCollection = async (url: string) => {
+  const rawHtml = await professionalFetch(url)
+  let $ = cheerio.load(rawHtml!)
+  const length = getLength($)
+
+  const knifeCollection: KnifeCollection = {
+    name: "one",
+    collection: [],
+  }
+
+  for (let i = 2; i <= length; i++) {
+    const skin = getSkinInfo($, i)
+    if (skin === null) {
+      continue
+    } else {
+      // knifeCollection.collection.push(skin)
+    }
+  }
+
+  const knifeCollection2: KnifeCollection = {
+    name: "two",
+    collection: [],
+  }
+
+  url =
+    url +
+    "&name=&has_st=1&no_st=1&has_souv=1&no_souv=1&sort=weapon&order=desc&page=2"
+  const nextPage = await professionalFetch(url)
+  $ = cheerio.load(nextPage!)
+
+  for (let i = 2; i <= length; i++) {
+    const skin = getSkinInfo($, i)
+    if (skin === null) {
+      continue
+    } else {
+      // knifeCollection2.collection.push(skin)
+    }
+  }
+
+  console.log(knifeCollection)
+  console.log(knifeCollection2)
+
+  return knifeCollection.name
 }

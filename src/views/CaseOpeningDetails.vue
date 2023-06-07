@@ -26,8 +26,8 @@ import { useCaseStore } from "@/stores/caseStore"
 import { useRoute } from "vue-router"
 import { getRarityColor } from "@/data/enums/rarity"
 
-const { findByShortName } = useCaseStore()
-const currentCase = findByShortName(useRoute().params.casename as string)
+const { findCaseByShortName } = useCaseStore()
+const currentCase = findCaseByShortName(useRoute().params.casename as string)
 
 const openCase = () => {}
 </script>
