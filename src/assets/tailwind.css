@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .panoramaBorder {
+    @apply border-b border-solid border-white border-opacity-30;
+  }
+
+  .panoramaIconTransition {
+    @apply z-10 transition-opacity hover:opacity-0;
+  }
+
+  .panoramaBlur {
+    @apply bg-black/20 backdrop-blur-2xl;
+  }
+}

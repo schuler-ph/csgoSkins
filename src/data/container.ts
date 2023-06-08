@@ -1,10 +1,8 @@
 import type { ContainerType } from "./enums/containerType"
+import type { ItemTemplate } from "./item"
 import type { SkinTemplate } from "./skins"
 
-export interface Container {
-  id: string
-  name: string
-  image: string
+export interface ContainerTemplate extends ItemTemplate {
   type: ContainerType
   firstSale: string
   description: string
