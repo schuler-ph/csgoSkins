@@ -4,7 +4,7 @@
 
 @layer components {
   .panoramaBorder {
-    @apply border-b border-solid border-white border-opacity-30;
+    @apply border-solid border-white border-opacity-30;
   }
 
   .panoramaIconTransition {
@@ -14,4 +14,25 @@
   .panoramaBlur {
     @apply bg-black/20 backdrop-blur-2xl;
   }
+
+  .panoramaBlur2 {
+    @apply bg-white/10 backdrop-blur-xl;
+  }
+
+  .tooltip {
+    @apply invisible absolute;
+  }
+
+  .has-tooltip:hover .tooltip {
+    @apply visible z-50;
+  }
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("font/Roboto-Regular.ttf");
+}
+
+* {
+  font-family: "Roboto";
 }

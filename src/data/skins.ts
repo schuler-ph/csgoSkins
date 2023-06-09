@@ -1,14 +1,14 @@
 import { WeaponName } from "./enums/weaponName"
 import { Rarity } from "./enums/rarity"
+import type { ItemTemplate } from "./item"
 
-export interface SkinTemplate {
-  id: string
+export interface SkinTemplate extends ItemTemplate {
   rarity: Rarity
   weaponName: WeaponName
   maxFloat: number
   minFloat: number
-  name: string
-  image: string
+  paintIndex: string
+  pattern: string
 }
 
 export interface SkinInstance {
@@ -16,11 +16,4 @@ export interface SkinInstance {
   float: number
   statTrak: boolean
   price: number
-  // TODO
-  // appliedSticker: {
-  //   sticker1: Sticker,
-  //   sticker2: Sticker,
-  //   sticker3: Sticker,
-  //   sticker4: Sticker
-  // }
 }
