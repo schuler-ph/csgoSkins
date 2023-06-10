@@ -119,10 +119,13 @@ import { RouterLink, RouterView } from "vue-router"
           class="panoramaBorder flex h-[11.5vw] w-[5vw] flex-col items-center border-b"
         >
           <img class="mt-[0.85vw] w-[3.3vw]" src="@/assets/ui/chad.jpg" />
-          <img class="mt-[1.2vw] w-[2.8vw]" src="@/assets/ui/csgoXp.webp" />
+          <img
+            class="mt-[1.2vw] w-[2.8vw]"
+            src="@/assets/ui/xp/Csgo-profile-rank-level1.webp"
+          />
           <img
             class="mt-[0.85vw] w-[4.3vw]"
-            src="@/assets/ui/skillgroup18.png"
+            src="@/assets/ui/ranks/skillgroup_none.png"
           />
         </div>
       </div>

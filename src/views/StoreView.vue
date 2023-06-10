@@ -69,6 +69,31 @@ const grabContainedItems = (currentContains: any, contains: any) => {
           image: skin[s]?.image!,
           variants: [],
         }
+
+        switch (skin[s]?.paint_index!) {
+          case "415":
+            variant.name = variant.name + " (Ruby)"
+            break
+          case "416":
+            variant.name = variant.name + " (Sapphire)"
+            break
+          case "417":
+            variant.name = variant.name + " (Blackpearl)"
+            break
+          case "418":
+            variant.name = variant.name + " (Phase 1)"
+            break
+          case "419":
+            variant.name = variant.name + " (Phase 2)"
+            break
+          case "420":
+            variant.name = variant.name + " (Phase 3)"
+            break
+          case "421":
+            variant.name = variant.name + " (Phase 4)"
+            break
+        }
+
         variants.push(variant)
       }
       template.variants = variants

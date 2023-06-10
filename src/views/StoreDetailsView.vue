@@ -84,42 +84,11 @@
       </div>
     </div>
   </div>
-  <div
-    class="panoramaBlur absolute left-0 top-0 mx-[10vw] my-[10vh] h-[80vh] w-[80vw]"
+  <ItemPreview
     v-if="lastItem"
-  >
-    <div
-      class="panoramaBlur2 flex h-[7vh] w-full flex-row"
-      :class="
-        lastItem?.template.rarity.toLowerCase().replace(' ', '') + 'Inspect'
-      "
-    >
-      <div
-        class="flex h-full w-[75vw] items-center justify-center text-3xl font-bold tracking-widest text-white"
-      >
-        {{
-          (lastItem?.statTrak ? "StatTrak™ " : "") +
-          lastItem?.template.weaponName +
-          " | " +
-          lastItem?.template.pattern
-        }}
-      </div>
-      <button
-        class="panoramaBlur2 flex h-full w-[5vw] items-center justify-center"
-        @click="deleteLastItem"
-      >
-        <img src="@/assets/ui/close.svg" class="w-[3vw]" />
-      </button>
-    </div>
-    <div
-      class="flex h-[73vh] w-full justify-center bg-gradient-to-t from-transparent"
-      :class="
-        lastItem?.template.rarity.toLowerCase().replace(' ', '') + 'Gradient'
-      "
-    >
-      <img :src="lastItem?.template.image" class="h-full" />
-    </div>
-  </div>
+    :display-item="lastItem!"
+    :delete-display-item="deleteLastItem"
+  />
 </template>
 
 <script setup lang="ts">
@@ -129,6 +98,8 @@ import { Rarity } from "@/data/enums/rarity"
 import type { SkinInstance, SkinTemplate } from "@/data/skins"
 import { useInventoryStore } from "@/stores/inventoryStore"
 import { ref } from "vue"
+import { floatToGrade } from "@/helper/floatHelper"
+import ItemPreview from "@/components/ItemPreview.vue"
 
 const showAnimation = ref(false)
 const startTranslation = ref(false)
@@ -254,52 +225,4 @@ function wasteMoney() {
 }
 </script>
 
-<style scoped>
-.mil-specgrade {
-  background-color: #4b69ff;
-}
-.mil-specgradeInspect {
-  background-color: #4b69ff4e;
-}
-.mil-specgradeGradient {
-  --tw-gradient-to: #4b69ff4e var(--tw-gradient-to-position);
-}
-.restricted {
-  background-color: #8847ff;
-}
-.restrictedInspect {
-  background-color: #8747ff4e;
-}
-.restrictedGradient {
-  --tw-gradient-to: #8747ff4e var(--tw-gradient-to-position);
-}
-.classified {
-  background-color: #d32ee6;
-}
-.classifiedInspect {
-  background-color: #d32ee64e;
-}
-.classifiedGradient {
-  --tw-gradient-to: #d32ee64e var(--tw-gradient-to-position);
-}
-.covert {
-  background-color: #eb4b4b;
-}
-.covertInspect {
-  background-color: #eb4b4b4e;
-}
-.covertGradient {
-  --tw-gradient-to: #eb4b4b4e var(--tw-gradient-to-position);
-}
-.rareSpecialItem {
-  background-color: gold;
-}
-.rareSpecialItemGradient {
-  --tw-gradient-to: rgba(255, 217, 0, 0.298) var(--tw-gradient-to-position);
-}
-.rollAnimation {
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.32, 0.62, 0, 1);
-  transition-duration: 5000ms;
-}
-</style>
+<style scoped></style>

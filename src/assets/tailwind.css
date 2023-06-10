@@ -36,3 +36,51 @@
 * {
   font-family: "Roboto";
 }
+
+.mil-specgrade {
+  background-color: #4b69ff;
+}
+.mil-specgradeInspect {
+  background-color: #4b69ff4e;
+}
+.mil-specgradeGradient {
+  --tw-gradient-to: #4b69ff4e var(--tw-gradient-to-position);
+}
+.restricted {
+  background-color: #8847ff;
+}
+.restrictedInspect {
+  background-color: #8747ff4e;
+}
+.restrictedGradient {
+  --tw-gradient-to: #8747ff4e var(--tw-gradient-to-position);
+}
+.classified {
+  background-color: #d32ee6;
+}
+.classifiedInspect {
+  background-color: #d32ee64e;
+}
+.classifiedGradient {
+  --tw-gradient-to: #d32ee64e var(--tw-gradient-to-position);
+}
+.covert {
+  background-color: #eb4b4b;
+}
+.covertInspect {
+  background-color: #eb4b4b4e;
+}
+.covertGradient {
+  --tw-gradient-to: #eb4b4b4e var(--tw-gradient-to-position);
+}
+.rareSpecialItem {
+  background-color: gold;
+}
+.rareSpecialItemGradient {
+  --tw-gradient-to: rgba(255, 217, 0, 0.298) var(--tw-gradient-to-position);
+}
+.rollAnimation {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.32, 0.62, 0, 1);
+  transition-duration: 5000ms;
+}
