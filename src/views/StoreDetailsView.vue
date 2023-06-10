@@ -34,30 +34,13 @@
       <div class="my-1 text-sm text-gray-100">★ Rare Special Item ★</div>
     </div>
   </div>
-  <div class="flex w-[90vw] items-center justify-center">
+  <div class="mt-20 flex w-[90vw] justify-center">
     <button
       class="mt-5 rounded-md bg-[#50c153] p-3 font-bold text-white"
       @click="wasteMoney"
     >
-      Waste 2.35 €
+      Waste $ 2.35
     </button>
-    <div class="flex flex-col" v-if="lastItem">
-      <div class="flex flex-row">
-        <div
-          :class="lastItem.template.rarity.toLowerCase().replace(' ', '')"
-          class="h-28 w-2"
-        ></div>
-        <div
-          class="flex h-28 w-44 items-center justify-center bg-gradient-to-b from-gray-500 to-gray-200"
-        >
-          <img class="h-24" :src="lastItem.template.image" />
-        </div>
-      </div>
-      <div class="my-1 text-sm font-bold text-gray-100">
-        {{ lastItem.template.weaponName }}
-      </div>
-      <div class="text-xs text-gray-200">{{ lastItem.template.pattern }}</div>
-    </div>
   </div>
   <div
     class="openingAnimation panoramaBlur absolute left-0 top-0 z-50 flex h-screen w-screen flex-col justify-center"
@@ -101,6 +84,42 @@
       </div>
     </div>
   </div>
+  <div
+    class="panoramaBlur absolute left-0 top-0 mx-[10vw] my-[10vh] h-[80vh] w-[80vw]"
+    v-if="lastItem"
+  >
+    <div
+      class="panoramaBlur2 flex h-[7vh] w-full flex-row"
+      :class="
+        lastItem?.template.rarity.toLowerCase().replace(' ', '') + 'Inspect'
+      "
+    >
+      <div
+        class="flex h-full w-[75vw] items-center justify-center text-3xl font-bold tracking-widest text-white"
+      >
+        {{
+          (lastItem?.statTrak ? "StatTrak™ " : "") +
+          lastItem?.template.weaponName +
+          " | " +
+          lastItem?.template.pattern
+        }}
+      </div>
+      <button
+        class="panoramaBlur2 flex h-full w-[5vw] items-center justify-center"
+        @click="deleteLastItem"
+      >
+        <img src="@/assets/ui/close.svg" class="w-[3vw]" />
+      </button>
+    </div>
+    <div
+      class="flex h-[73vh] w-full justify-center bg-gradient-to-t from-transparent"
+      :class="
+        lastItem?.template.rarity.toLowerCase().replace(' ', '') + 'Gradient'
+      "
+    >
+      <img :src="lastItem?.template.image" class="h-full" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -110,7 +129,6 @@ import { Rarity } from "@/data/enums/rarity"
 import type { SkinInstance, SkinTemplate } from "@/data/skins"
 import { useInventoryStore } from "@/stores/inventoryStore"
 import { ref } from "vue"
-import { WeaponName } from "@/data/enums/weaponName"
 
 const showAnimation = ref(false)
 const startTranslation = ref(false)
@@ -122,8 +140,13 @@ const container = containers.find((c) => c.id === useRoute().params.caseName)
 const randomTranslation = ref()
 
 const chances = [79.923, 15.985, 3.197, 0.639, 0.256]
-// const chances = [1, 1, 1, 1, 96]
+// const chances = [0, 0, 0, 0, 100]
+// const chances = [0, 0, 0, 100, 0]
+
 const lastItem = ref<SkinInstance>()
+function deleteLastItem() {
+  lastItem.value = undefined
+}
 
 function startAnimation() {
   startTranslation.value = true
@@ -235,11 +258,17 @@ function wasteMoney() {
 .mil-specgrade {
   background-color: #4b69ff;
 }
+.mil-specgradeInspect {
+  background-color: #4b69ff4e;
+}
 .mil-specgradeGradient {
   --tw-gradient-to: #4b69ff4e var(--tw-gradient-to-position);
 }
 .restricted {
   background-color: #8847ff;
+}
+.restrictedInspect {
+  background-color: #8747ff4e;
 }
 .restrictedGradient {
   --tw-gradient-to: #8747ff4e var(--tw-gradient-to-position);
@@ -247,11 +276,17 @@ function wasteMoney() {
 .classified {
   background-color: #d32ee6;
 }
+.classifiedInspect {
+  background-color: #d32ee64e;
+}
 .classifiedGradient {
   --tw-gradient-to: #d32ee64e var(--tw-gradient-to-position);
 }
 .covert {
   background-color: #eb4b4b;
+}
+.covertInspect {
+  background-color: #eb4b4b4e;
 }
 .covertGradient {
   --tw-gradient-to: #eb4b4b4e var(--tw-gradient-to-position);
