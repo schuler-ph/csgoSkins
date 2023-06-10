@@ -1,11 +1,13 @@
 <template>
   <div>
     <button @click="grabContainers">Pull up</button>
-    <div class="grid grid-cols-8">
+    <button @click="deleteContainer">Delete all</button>
+    <div
+      class="xs:grid-cols-5 grid grid-cols-4 gap-10 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8"
+    >
       <RouterLink :to="'/store/' + c.id" v-for="c in containers">
         <div>{{ c.name }}</div>
-        <img :src="c.image" class="w-full" />
-        <button @click="deleteContainer(c.id)"></button>
+        <img :src="c.image" class="w-32" />
       </RouterLink>
     </div>
   </div>
@@ -24,15 +26,78 @@ import { getWeapon } from "@/data/enums/weaponName"
 import { useTemplateStore } from "@/stores/templateStore"
 const { containers } = useTemplateStore()
 
-const deleteContainer = (id: string) => {
-  const index = containers.findIndex((obj) => obj.id === id)
-  if (index !== -1) {
-    containers.splice(index, 1)
+const deleteContainer = () => {
+  containers.splice(0, containers.length)
+  // const index = containers.findIndex((obj) => obj.id === id)
+  // if (index !== -1) {
+  //   containers.splice(index, 1)
+  // }
+}
+
+const grabContainedItems = (currentContains: any, contains: any) => {
+  const doubledItems: string[] = []
+  for (const cnt in currentContains) {
+    const currentItem = currentContains[cnt]
+    if (doubledItems.includes(currentItem.name)) continue
+
+    const skin = skins.filter((s) => s.name === currentItem.name)
+    if (skin.length > 1) {
+      doubledItems.push(currentItem.name)
+      const variants: any = []
+      const template: SkinTemplate = {
+        id: skin[0]?.id!,
+        rarity: getRarity(currentItem.rarity),
+        weaponName: getWeapon(skin[0]?.weapon!),
+        maxFloat: skin[0]?.max_float!,
+        minFloat: skin[0]?.min_float!,
+        name: skin[0]?.name!,
+        paintIndex: skin[0]?.paint_index!,
+        pattern: skin[0]?.pattern!,
+        image: skin[0]?.image!,
+        variants: [],
+      }
+      for (const s in skin) {
+        const variant: SkinTemplate = {
+          id: skin[s]?.id!,
+          rarity: getRarity(currentItem.rarity),
+          weaponName: getWeapon(skin[s]?.weapon!),
+          maxFloat: skin[s]?.max_float!,
+          minFloat: skin[s]?.min_float!,
+          name: skin[s]?.name!,
+          paintIndex: skin[s]?.paint_index!,
+          pattern: skin[s]?.pattern!,
+          image: skin[s]?.image!,
+          variants: [],
+        }
+        variants.push(variant)
+      }
+      template.variants = variants
+      contains.push(template)
+    } else {
+      for (const s in skin) {
+        const template: SkinTemplate = {
+          id: skin[s]?.id!,
+          rarity: getRarity(currentItem.rarity),
+          weaponName: getWeapon(skin[s]?.weapon!),
+          maxFloat: skin[s]?.max_float!,
+          minFloat: skin[s]?.min_float!,
+          name: skin[s]?.name!,
+          paintIndex: skin[s]?.paint_index!,
+          pattern: skin[s]?.pattern!,
+          image: skin[s]?.image!,
+          variants: [],
+        }
+        contains.push(template)
+      }
+    }
   }
 }
 
 const grabContainers = () => {
   for (let i = 0; i < cases.length; i++) {
+    // if (cases[i].id !== "crate-4061") continue
+    if (cases[i].type !== "Case") continue
+
     const currentContainer = cases[i]
     const container: ContainerTemplate = {
       id: currentContainer.id,
@@ -44,38 +109,10 @@ const grabContainers = () => {
       contains: [],
       containsRare: [],
     }
-    for (const cnt in currentContainer.contains) {
-      const currentItem = currentContainer.contains[cnt]
-      const skin = skins.find((s) => s.name === currentItem.name)
-      const template: SkinTemplate = {
-        id: currentItem.id,
-        rarity: getRarity(currentItem.rarity),
-        weaponName: getWeapon(skin?.weapon!),
-        maxFloat: skin?.max_float!,
-        minFloat: skin?.min_float!,
-        name: skin?.name!,
-        paintIndex: skin?.paint_index!,
-        pattern: skin?.pattern!,
-        image: skin?.image!,
-      }
-      container.contains.push(template)
-    }
-    for (const cntR in currentContainer.contains_rare) {
-      const currentItem = currentContainer.contains_rare[cntR]
-      const skin = skins.find((s) => s.name === currentItem.name)
-      const template: SkinTemplate = {
-        id: skin?.id!,
-        rarity: Rarity.RED,
-        weaponName: getWeapon(skin?.weapon!),
-        maxFloat: skin?.max_float!,
-        minFloat: skin?.min_float!,
-        name: skin?.name!,
-        paintIndex: skin?.paint_index!,
-        pattern: skin?.pattern!,
-        image: skin?.image!,
-      }
-      container.containsRare.push(template)
-    }
+
+    grabContainedItems(currentContainer.contains, container.contains)
+    grabContainedItems(currentContainer.contains_rare, container.containsRare)
+
     containers.push(container)
   }
 }

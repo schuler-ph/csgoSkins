@@ -6,7 +6,6 @@ export const useTemplateStore = defineStore(
   "templateStore",
   () => {
     const containers = ref<ContainerTemplate[]>([])
-
     return { containers }
   },
   {

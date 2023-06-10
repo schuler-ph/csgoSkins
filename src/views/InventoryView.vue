@@ -27,7 +27,7 @@
   </div>
 
   <div
-    class="panoramaBlur panoramaBorder grid grid-cols-8 border-l border-t px-20 pt-5"
+    class="panoramaBlur panoramaBorder grid grid-cols-4 gap-1 border-l border-t pt-5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 xl:px-20"
   >
     <InventoryItem v-for="i in inventoryFiltered(filterRarity)" :item="i" />
   </div>

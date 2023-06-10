@@ -9,6 +9,7 @@ export interface SkinTemplate extends ItemTemplate {
   minFloat: number
   paintIndex: string
   pattern: string
+  variants: SkinTemplate[]
 }
 
 export interface SkinInstance {
