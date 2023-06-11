@@ -29,17 +29,40 @@
   <div
     class="panoramaBlur panoramaBorder grid grid-cols-4 gap-1 border-l border-t pt-5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 xl:px-20"
   >
-    <InventoryItem v-for="i in inventoryFiltered(filterRarity)" :item="i" />
+    <InventoryItem
+      v-for="i in inventoryFiltered(filterRarity)"
+      :item="i"
+      @inspect="setInspectItem"
+    />
   </div>
+
+  <ItemPreview
+    v-if="inspectItem"
+    :display-item="inspectItem!"
+    @deleteitem="deleteInspectItem"
+  />
 </template>
 
 <script setup lang="ts">
 import InventoryItem from "@/components/InventoryItem.vue"
+import ItemPreview from "@/components/ItemPreview.vue"
 import { Rarity } from "@/data/enums/rarity"
+import { type SkinInstance } from "@/data/skins"
 import { useInventoryStore } from "@/stores/inventoryStore"
 import { ref } from "vue"
+import inspectImport from "@/assets/sounds/inspect_weapon_01.wav"
 
 const filterRarity = ref<Rarity | undefined>(undefined)
+const inspectItem = ref<SkinInstance>()
+const setInspectItem = (item: SkinInstance) => {
+  inspectItem.value = item
+  const inspectAudio = new Audio(inspectImport)
+  inspectAudio.volume = 0.1
+  inspectAudio.play()
+}
+const deleteInspectItem = () => {
+  inspectItem.value = undefined
+}
 
 const { inventory } = useInventoryStore()
 const inventoryFiltered = (rarity: Rarity | undefined) => {

@@ -10,6 +10,7 @@ export interface SkinTemplate extends ItemTemplate {
   paintIndex: string
   pattern: string
   variants: SkinTemplate[]
+  canHaveStatTrak: boolean
 }
 
 export interface SkinInstance {
@@ -17,4 +18,5 @@ export interface SkinInstance {
   float: number
   statTrak: boolean
   price: number
+  timestamp: Date
 }

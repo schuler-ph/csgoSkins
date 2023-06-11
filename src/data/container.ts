@@ -5,7 +5,6 @@ import type { SkinTemplate } from "./skins"
 export interface ContainerTemplate extends ItemTemplate {
   type: ContainerType | null
   firstSale: string | null
-  description: string | null
   contains: SkinTemplate[]
   containsRare: SkinTemplate[]
 }

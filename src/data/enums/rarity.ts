@@ -8,7 +8,6 @@ export enum Rarity {
   PURPLE = "Restricted",
   PINK = "Classified",
   RED = "Covert",
-  GOLD = "Rare Special Item",
   CONTRABAND = "Contraband",
 }
 

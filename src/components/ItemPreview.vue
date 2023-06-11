@@ -1,6 +1,6 @@
 <template>
   <div
-    class="panoramaBlur absolute left-0 top-0 mx-[10vw] my-[10vh] h-[80vh] w-[80vw]"
+    class="panoramaBlur fixed left-0 top-0 z-10 mx-[10vw] my-[10vh] h-[80vh] w-[80vw]"
   >
     <div
       class="panoramaBlur2 flex h-[7vh] w-full flex-row"
@@ -13,14 +13,15 @@
       >
         {{
           (displayItem?.statTrak ? "StatTrak™ " : "") +
-          displayItem?.template.weaponName +
-          " | " +
-          displayItem?.template.pattern
+          displayItem?.template.name +
+          " (" +
+          floatToGrade(displayItem?.float) +
+          ")"
         }}
       </div>
       <button
         class="panoramaBlur2 flex h-full w-[5vw] items-center justify-center"
-        @click="deleteDisplayItem!"
+        @click="$emit('deleteitem')"
       >
         <img src="@/assets/ui/close.svg" class="w-[3vw]" />
       </button>
@@ -31,29 +32,51 @@
         displayItem?.template.rarity.toLowerCase().replace(' ', '') + 'Gradient'
       "
     >
-      <img :src="displayItem?.template.image" class="h-full" />
-      <div
+      <img :src="displayItem?.template.image" class="z-30 h-full" />
+      <!-- <div
         class="panoramaBlur absolute bottom-5 rounded-xl px-3 py-2 text-2xl text-white"
       >
-        {{ floatToGrade(displayItem?.float) }}
-      </div>
+        {{  }}
+      </div> -->
+      <img
+        v-if="displayItem?.statTrak"
+        src="@/assets/ui/Stattrak.webp"
+        class="absolute bottom-1/4 right-1/3 z-40"
+      />
+      <img
+        v-if="displayItem?.template.rarity === Rarity.BLUE"
+        src="@/assets/ui/decagram/decagramBlue.svg"
+        class="rotating absolute z-20 h-[75vh]"
+      />
+      <img
+        v-if="displayItem?.template.rarity === Rarity.PURPLE"
+        src="@/assets/ui/decagram/decagramPurple.svg"
+        class="rotating absolute z-20 h-[75vh]"
+      />
+      <img
+        v-if="displayItem?.template.rarity === Rarity.PINK"
+        src="@/assets/ui/decagram/decagramPink.svg"
+        class="rotating absolute z-20 h-[75vh]"
+      />
+      <img
+        v-if="displayItem?.template.rarity === Rarity.RED"
+        src="@/assets/ui/decagram/decagramRed.svg"
+        class="rotating absolute z-20 h-[75vh]"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Rarity } from "@/data/enums/rarity"
+import type { SkinInstance } from "@/data/skins"
 import { floatToGrade } from "@/helper/floatHelper"
 
-defineProps({
-  displayItem: {
-    type: Object,
-    required: true,
-  },
-  deleteDisplayItem: {
-    type: Function,
-    required: true,
-  },
-})
+interface Props {
+  displayItem: SkinInstance
+}
+
+const props = defineProps<Props>()
 </script>
 
 <style scoped></style>

@@ -4,40 +4,26 @@
     <div class="text-2xl text-gray-200">Unlock {{ container?.name }}</div>
     <img class="w-3/12" :src="container?.image" />
   </div>
-  <div
-    class="mx-3 grid grid-cols-6 gap-3 gap-y-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-9 2xl:grid-cols-10"
-  >
-    <div v-for="i in container?.contains" class="flex flex-col">
-      <div class="flex flex-row">
-        <div
-          :class="i.rarity.toLowerCase().replace(' ', '')"
-          class="h-28 w-2"
-        ></div>
-        <div
-          class="flex h-28 w-44 items-center justify-center bg-gradient-to-b from-gray-500 to-gray-200"
-        >
-          <img class="h-24" :src="i.image" />
-        </div>
-      </div>
-      <div class="my-1 text-sm font-bold text-gray-100">{{ i.weaponName }}</div>
-      <div class="text-xs text-gray-200">{{ i.pattern }}</div>
-    </div>
-    <div v-if="container?.containsRare.length! > 0" class="flex flex-col">
-      <div class="flex flex-row">
-        <div class="rareSpecialItem h-28 w-2"></div>
-        <div
-          class="flex h-28 w-44 items-center justify-center bg-gradient-to-b from-gray-500 to-gray-200"
-        >
-          <img class="h-24" src="@/assets/ui/rare_item.webp" />
-        </div>
-      </div>
-      <div class="my-1 text-sm text-gray-100">★ Rare Special Item ★</div>
-    </div>
-  </div>
-  <div class="mt-20 flex w-[90vw] justify-center">
+  <CaseContainedItems
+    :contains="container?.contains"
+    :container-contains-rare="container?.containsRare.length! > 0"
+  />
+  <div v-if="container?.containsRare.length! > 0">
     <button
-      class="mt-5 rounded-md bg-[#50c153] p-3 font-bold text-white"
-      @click="wasteMoney"
+      @click="showRareItems = !showRareItems"
+      class="m-5 rounded-full border-2 border-dashed border-[black] bg-[#ffd9009b] p-1 text-[black]"
+    >
+      Show Rare Special Items
+    </button>
+    <CaseContainedItemsRare
+      v-if="showRareItems"
+      :contains="container?.containsRare"
+    />
+  </div>
+  <div class="fixed bottom-5 left-1/2">
+    <button
+      class="z-50 mt-5 rounded-md bg-[#50c153] p-3 font-bold text-white"
+      @click="startAnimation"
     >
       Waste $ 2.35
     </button>
@@ -46,7 +32,7 @@
     class="openingAnimation panoramaBlur absolute left-0 top-0 z-50 flex h-screen w-screen flex-col justify-center"
     :class="showAnimation ? 'block' : 'hidden'"
   >
-    <div class="flex h-40 w-screen items-center bg-white/40">
+    <div class="flex h-96 w-screen items-center bg-white/40">
       <div class="flex flex-row gap-5 overflow-hidden">
         <div
           v-for="i in demoItems"
@@ -56,38 +42,43 @@
         >
           <div class="flex flex-col" v-if="i.index !== 4">
             <div
-              class="flex h-28 w-44 items-center justify-center bg-gradient-to-b from-gray-500"
+              class="flex h-60 w-96 items-center justify-center bg-gradient-to-b from-gray-500"
               :class="
                 i.instance.template.rarity.toLowerCase().replace(' ', '') +
                 'Gradient'
               "
             >
-              <img class="h-24" :src="i.instance.template.image" />
+              <img class="h-48" :src="i.instance.template.image" />
+              <img
+                v-if="i.instance.statTrak"
+                src="@/assets/ui/Stattrak.webp"
+                class="absolute bottom-20 right-16 h-14"
+              />
             </div>
             <div
               :class="i.instance.template.rarity.toLowerCase().replace(' ', '')"
-              class="h-2 w-44"
+              class="h-2 w-96"
             ></div>
           </div>
           <div v-else class="flex flex-col">
             <div
-              class="rareSpecialItemGradient flex h-28 w-44 items-center justify-center bg-gradient-to-b from-gray-500"
+              class="rareSpecialItemGradient flex h-60 w-96 items-center justify-center bg-gradient-to-b from-gray-500"
             >
-              <img class="h-24" src="@/assets/ui/rare_item.webp" />
+              <img class="h-48" src="@/assets/ui/rare_item.webp" />
             </div>
-            <div class="rareSpecialItem h-2 w-44"></div>
+            <div class="rareSpecialItem h-2 w-96"></div>
           </div>
         </div>
       </div>
       <div class="absolute flex w-screen justify-center">
-        <div class="h-40 w-[0.125rem] bg-yellow-400"></div>
+        <div class="h-96 w-[0.125rem] bg-yellow-400"></div>
       </div>
     </div>
   </div>
   <ItemPreview
     v-if="lastItem"
     :display-item="lastItem!"
-    :delete-display-item="deleteLastItem"
+    @deleteitem="deleteLastItem"
   />
 </template>
 
@@ -100,6 +91,13 @@ import { useInventoryStore } from "@/stores/inventoryStore"
 import { ref } from "vue"
 import { floatToGrade } from "@/helper/floatHelper"
 import ItemPreview from "@/components/ItemPreview.vue"
+import CaseContainedItemsRare from "@/components/CaseContainedItemsRare.vue"
+import CaseContainedItems from "@/components/CaseContainedItems.vue"
+import revealBlueImport from "@/assets/sounds/case_reveal_rare_01.wav"
+import revealPurpleImport from "@/assets/sounds/case_reveal_mythical_01.wav"
+import revealPinkRedImport from "@/assets/sounds/case_reveal_legendary_01.wav"
+import revealRsiImport from "@/assets/sounds/case_reveal_ancient_01.wav"
+import caseItemScroll from "@/assets/sounds/csgo_ui_crate_item_scroll.wav"
 
 const showAnimation = ref(false)
 const startTranslation = ref(false)
@@ -109,58 +107,99 @@ const { inventory } = useInventoryStore()
 const { containers } = useTemplateStore()
 const container = containers.find((c) => c.id === useRoute().params.caseName)
 const randomTranslation = ref()
+const showRareItems = ref(false)
 
 const chances = [79.923, 15.985, 3.197, 0.639, 0.256]
 // const chances = [0, 0, 0, 0, 100]
 // const chances = [0, 0, 0, 100, 0]
 
-const lastItem = ref<SkinInstance>()
+const lastItem = ref<SkinInstance | null>()
 function deleteLastItem() {
-  lastItem.value = undefined
+  lastItem.value = null
+}
+
+const playScrollSound = (
+  repeats: number,
+  curRep: number,
+  interval: number,
+  index: number
+) => {
+  const caseItemScrollAudio = new Audio(caseItemScroll)
+  caseItemScrollAudio.volume = 0.05
+  caseItemScrollAudio.pause()
+  caseItemScrollAudio.play()
+  curRep++
+  if (curRep < repeats) {
+    setTimeout(() => {
+      playScrollSound(repeats, curRep, interval, index)
+    }, interval)
+  } else {
+    switch (index) {
+      case 0:
+        setTimeout(() => {
+          playScrollSound(8, 0, 70, 1)
+        }, 100)
+        break
+      case 1:
+        setTimeout(() => {
+          playScrollSound(5, 0, 150, 2)
+        }, 150)
+        break
+      case 2:
+        setTimeout(() => {
+          playScrollSound(2, 0, 250, 3)
+        }, 200)
+        break
+    }
+  }
 }
 
 function startAnimation() {
+  for (let i = 0; i < 55; i++) {
+    const { instance, index } = rollSkin()
+    demoItems.value.push({ index, instance })
+  }
+  showAnimation.value = true
   startTranslation.value = true
+
+  playScrollSound(30, 0, 50, 0)
+
   randomTranslation.value = 0
   setTimeout(() => {
-    randomTranslation.value = (
-      Math.random() * (1000.4 - 991.3) +
-      991.3
-    ).toFixed(1)
+    randomTranslation.value = (Math.random() * (1001 - 981) + 981).toFixed(1)
+
     setTimeout(() => {
-      lastItem.value = demoItems.value[102].instance
+      lastItem.value = demoItems.value[49].instance
       inventory.push(lastItem.value)
+      playRevealSound(demoItems.value[49].index)
       stopAnimation()
     }, 5500)
   }, 10)
 }
 
-function openAnimation() {
-  for (let i = 0; i < 110; i++) {
-    const { instance, index } = rollSkin()
-    demoItems.value.push({ index, instance })
+function playRevealSound(rarity: number) {
+  let revealSound = new Audio()
+
+  switch (rarity) {
+    case 0:
+      revealSound = new Audio(revealBlueImport)
+      break
+    case 1:
+      revealSound = new Audio(revealPurpleImport)
+      break
+    case 2:
+      revealSound = new Audio(revealPinkRedImport)
+      break
+    case 3:
+      revealSound = new Audio(revealPinkRedImport)
+      break
+    case 4:
+      revealSound = new Audio(revealRsiImport)
+      break
   }
-  // const tigertott = {
-  //   template: {
-  //     id: "skin-32769636",
-  //     rarity: Rarity.RED,
-  //     weaponName: WeaponName.KN_BAYONET,
-  //     maxFloat: 0.08,
-  //     minFloat: 0,
-  //     name: "Bayonet | Tiger Tooth",
-  //     paintIndex: "409",
-  //     pattern: "Tiger Tooth",
-  //     image:
-  //       "https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_bayonet_an_tiger_orange_light_large.780ff3a58d01a73d4d7d755adbdca46483d13faf.png",
-  //     variants: [],
-  //   },
-  //   float: 0.056042085019103106,
-  //   statTrak: true,
-  //   price: 0,
-  // }
-  // demoItems.value[102].instance = tigertott
-  // demoItems.value[102].index = 4
-  showAnimation.value = true
+
+  revealSound.volume = 0.01
+  revealSound.play()
 }
 
 function stopAnimation() {
@@ -213,15 +252,11 @@ function rollSkin() {
     float:
       Math.random() * (aquiredSkin.maxFloat - aquiredSkin.minFloat) +
       aquiredSkin.minFloat,
-    statTrak: container?.containsRare.length! > 0 ? Math.random() < 0.1 : false,
+    statTrak: aquiredSkin.canHaveStatTrak ? Math.random() < 0.1 : false,
     price: 0,
+    timestamp: new Date(),
   }
   return { instance, index }
-}
-
-function wasteMoney() {
-  openAnimation()
-  startAnimation()
 }
 </script>
 
