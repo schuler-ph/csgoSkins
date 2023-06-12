@@ -50,15 +50,13 @@ import { Rarity } from "@/data/enums/rarity"
 import { type SkinInstance } from "@/data/skins"
 import { useInventoryStore } from "@/stores/inventoryStore"
 import { ref } from "vue"
-import inspectImport from "@/assets/sounds/inspect_weapon_01.wav"
+import { sound } from "@/helper/soundHelper"
 
 const filterRarity = ref<Rarity | undefined>(undefined)
 const inspectItem = ref<SkinInstance>()
 const setInspectItem = (item: SkinInstance) => {
   inspectItem.value = item
-  const inspectAudio = new Audio(inspectImport)
-  inspectAudio.volume = 0.1
-  inspectAudio.play()
+  sound("inspectItem")
 }
 const deleteInspectItem = () => {
   inspectItem.value = undefined

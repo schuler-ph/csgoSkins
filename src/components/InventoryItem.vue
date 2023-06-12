@@ -1,5 +1,9 @@
 <template>
-  <button class="flex flex-col" @click="$emit('inspect', item)">
+  <button
+    class="flex flex-col"
+    @click="$emit('inspect', item)"
+    @mouseenter="sound('hoverInventoryItem')"
+  >
     <div class="flex flex-row">
       <div
         :class="item?.template.rarity.toLowerCase().replace(' ', '')"
@@ -33,6 +37,8 @@
 
 <script setup lang="ts">
 import { floatToGrade } from "@/helper/floatHelper"
+import { sound } from "@/helper/soundHelper"
+
 const props = defineProps({
   item: Object,
 })

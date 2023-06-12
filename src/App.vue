@@ -1,40 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router"
 
-// const hover = new Audio("sounds/mainmenu_rollover_01.wav")
-// const homePress = new Audio("assets/sounds/mainmenu_press_home.wav")
-import homePress from "@/assets/sounds/mainmenu_press_home_01.wav"
-import hover from "@/assets/sounds/mainmenu_rollover_01.wav"
-import playPress from "@/assets/sounds/mainmenu_press_play.wav"
-import inventoryPress from "@/assets/sounds/mainmenu_press_inventory_02.wav"
-
-const homePressSound = () => {
-  const homePressAudio = new Audio(homePress)
-  homePressAudio.volume = 0.01
-  homePressAudio.pause()
-  homePressAudio.play()
-}
-
-const hoverSound = () => {
-  const hoverAudio = new Audio(hover)
-  hoverAudio.volume = 0.01
-  hoverAudio.pause()
-  hoverAudio.play()
-}
-
-const playPressSound = () => {
-  const playPressAudio = new Audio(playPress)
-  playPressAudio.volume = 0.01
-  playPressAudio.pause()
-  playPressAudio.play()
-}
-
-const inventoryPressSound = () => {
-  const inventoryPressAudio = new Audio(inventoryPress)
-  inventoryPressAudio.volume = 0.01
-  inventoryPressAudio.pause()
-  inventoryPressAudio.play()
-}
+import { sound } from "@/helper/soundHelper"
 </script>
 
 <template>
@@ -55,10 +22,10 @@ const inventoryPressSound = () => {
         <RouterLink to="/">
           <div
             class="panoramaBorder flex h-[5vw] items-center justify-center border-b"
-            @click="homePressSound"
+            @click="sound('homePress')"
           >
             <img
-              @mouseover="hoverSound"
+              @mouseover="sound('hover')"
               src="@/assets/ui/CSGO-Logo.svg"
               class="panoramaIconTransition w-[4vw]"
             />
@@ -73,10 +40,10 @@ const inventoryPressSound = () => {
           class="panoramaBorder flex h-[10vw] flex-col items-center justify-evenly border-b"
         >
           <RouterLink to="/play">
-            <div class="flex" @click="playPressSound">
+            <div class="flex" @click="sound('playPress')">
               <img
                 src="@/assets/ui/play-filled.svg"
-                @mouseover="hoverSound"
+                @mouseover="sound('hover')"
                 class="panoramaIconTransition w-[3.5vw]"
               />
               <img
@@ -87,7 +54,7 @@ const inventoryPressSound = () => {
           </RouterLink>
           <RouterLink to="/looking" class="flex">
             <img
-              @mouseover="hoverSound"
+              @mouseover="sound('hover')"
               src="@/assets/ui/antenna.svg"
               class="panoramaIconTransition w-[2.5vw]"
             />
@@ -100,10 +67,10 @@ const inventoryPressSound = () => {
         <RouterLink to="/inventory">
           <div
             class="flex h-[5vw] flex-col items-center justify-center"
-            @click="inventoryPressSound"
+            @click="sound('inventoryPress')"
           >
             <img
-              @mouseover="hoverSound"
+              @mouseover="sound('hover')"
               src="@/assets/ui/inventory.svg"
               class="panoramaIconTransition w-[2.5vw]"
             />
@@ -118,7 +85,7 @@ const inventoryPressSound = () => {
           class="flex h-[5vw] flex-col items-center justify-center"
         >
           <img
-            @mouseover="hoverSound"
+            @mouseover="sound('hover')"
             src="@/assets/ui/store.svg"
             class="panoramaIconTransition w-[2.5vw]"
           />
@@ -129,7 +96,7 @@ const inventoryPressSound = () => {
           class="flex h-[5vw] flex-col items-center justify-center"
         >
           <img
-            @mouseover="hoverSound"
+            @mouseover="sound('hover')"
             src="@/assets/ui/tv.svg"
             class="panoramaIconTransition w-[2.2vw]"
           />
@@ -140,7 +107,7 @@ const inventoryPressSound = () => {
           class="flex h-[5vw] flex-col items-center justify-center"
         >
           <img
-            @mouseover="hoverSound"
+            @mouseover="sound('hover')"
             src="@/assets/ui/cog.svg"
             class="panoramaIconTransition w-[2vw]"
           />
@@ -149,7 +116,7 @@ const inventoryPressSound = () => {
       </div>
       <div id="quit" class="flex h-[5vw] flex-col items-center justify-center">
         <img
-          @mouseover="hoverSound"
+          @mouseover="sound('hover')"
           src="@/assets/ui/off.svg"
           class="panoramaIconTransition w-[1.7vw]"
         />
@@ -161,6 +128,8 @@ const inventoryPressSound = () => {
     </main>
 
     <aside
+      @mouseenter="sound('sideSlideIn')"
+      @mouseleave="sound('sideSlideIn')"
       class="panoramaBlur fixed right-[-15vw] top-0 flex h-screen w-[20vw] flex-row shadow-xl transition-all hover:right-0"
     >
       <div class="flex w-[5vw] flex-col items-center">

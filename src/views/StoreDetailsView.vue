@@ -10,7 +10,7 @@
   />
   <div v-if="container?.containsRare.length! > 0">
     <button
-      @click="showRareItems = !showRareItems"
+      @click="switchShowRareItems"
       class="m-5 rounded-full border-2 border-dashed border-[black] bg-[#ffd9009b] p-1 text-[black]"
     >
       Show Rare Special Items
@@ -20,17 +20,17 @@
       :contains="container?.containsRare"
     />
   </div>
-  <div class="fixed bottom-5 left-1/2">
+  <div class="flex justify-center">
     <button
-      class="z-50 mt-5 rounded-md bg-[#50c153] p-3 font-bold text-white"
+      class="fixed bottom-5 z-50 rounded-md bg-[#50c153] p-3 font-bold text-white"
       @click="startAnimation"
     >
       Waste $ 2.35
     </button>
   </div>
   <div
-    class="openingAnimation panoramaBlur absolute left-0 top-0 z-50 flex h-screen w-screen flex-col justify-center"
-    :class="showAnimation ? 'block' : 'hidden'"
+    class="openingAnimation panoramaBlur left-0 top-0 z-50 flex h-screen w-screen flex-col items-center"
+    :class="showAnimation ? 'fixed' : 'hidden'"
   >
     <div class="flex h-96 w-screen items-center bg-white/40">
       <div class="flex flex-row gap-5 overflow-hidden">
@@ -89,15 +89,10 @@ import { Rarity } from "@/data/enums/rarity"
 import type { SkinInstance, SkinTemplate } from "@/data/skins"
 import { useInventoryStore } from "@/stores/inventoryStore"
 import { ref } from "vue"
-import { floatToGrade } from "@/helper/floatHelper"
 import ItemPreview from "@/components/ItemPreview.vue"
 import CaseContainedItemsRare from "@/components/CaseContainedItemsRare.vue"
 import CaseContainedItems from "@/components/CaseContainedItems.vue"
-import revealBlueImport from "@/assets/sounds/case_reveal_rare_01.wav"
-import revealPurpleImport from "@/assets/sounds/case_reveal_mythical_01.wav"
-import revealPinkRedImport from "@/assets/sounds/case_reveal_legendary_01.wav"
-import revealRsiImport from "@/assets/sounds/case_reveal_ancient_01.wav"
-import caseItemScroll from "@/assets/sounds/csgo_ui_crate_item_scroll.wav"
+import { sound } from "@/helper/soundHelper"
 
 const showAnimation = ref(false)
 const startTranslation = ref(false)
@@ -118,16 +113,23 @@ function deleteLastItem() {
   lastItem.value = null
 }
 
+const switchShowRareItems = () => {
+  if (showRareItems.value) {
+    sound("close")
+    showRareItems.value = false
+  } else {
+    sound("showKnives")
+    showRareItems.value = true
+  }
+}
+
 const playScrollSound = (
   repeats: number,
   curRep: number,
   interval: number,
   index: number
 ) => {
-  const caseItemScrollAudio = new Audio(caseItemScroll)
-  caseItemScrollAudio.volume = 0.05
-  caseItemScrollAudio.pause()
-  caseItemScrollAudio.play()
+  sound("caseItemScroll")
   curRep++
   if (curRep < repeats) {
     setTimeout(() => {
@@ -155,58 +157,51 @@ const playScrollSound = (
 }
 
 function startAnimation() {
-  for (let i = 0; i < 55; i++) {
-    const { instance, index } = rollSkin()
-    demoItems.value.push({ index, instance })
-  }
-  showAnimation.value = true
-  startTranslation.value = true
-
-  playScrollSound(30, 0, 50, 0)
-
-  randomTranslation.value = 0
+  sound("unlockCase")
   setTimeout(() => {
-    randomTranslation.value = (Math.random() * (1001 - 981) + 981).toFixed(1)
+    for (let i = 0; i < 55; i++) {
+      const { instance, index } = rollSkin()
+      demoItems.value.push({ index, instance })
+    }
 
+    showAnimation.value = true
+    startTranslation.value = true
+
+    playScrollSound(30, 0, 50, 0)
+
+    randomTranslation.value = 0
     setTimeout(() => {
-      lastItem.value = demoItems.value[49].instance
-      inventory.push(lastItem.value)
-      playRevealSound(demoItems.value[49].index)
-      stopAnimation()
-    }, 5500)
-  }, 10)
-}
+      randomTranslation.value = (Math.random() * (1001 - 981) + 981).toFixed(1)
 
-function playRevealSound(rarity: number) {
-  let revealSound = new Audio()
+      setTimeout(() => {
+        lastItem.value = demoItems.value[49].instance
+        inventory.push(lastItem.value)
 
-  switch (rarity) {
-    case 0:
-      revealSound = new Audio(revealBlueImport)
-      break
-    case 1:
-      revealSound = new Audio(revealPurpleImport)
-      break
-    case 2:
-      revealSound = new Audio(revealPinkRedImport)
-      break
-    case 3:
-      revealSound = new Audio(revealPinkRedImport)
-      break
-    case 4:
-      revealSound = new Audio(revealRsiImport)
-      break
-  }
+        switch (demoItems.value[49].index) {
+          case 0:
+            sound("revealBlue")
+            break
+          case 1:
+            sound("revealPurple")
+            break
+          case 2:
+            sound("revealPinkRed")
+            break
+          case 3:
+            sound("revealPinkRed")
+            break
+          case 4:
+            sound("revealRsi")
+            break
+        }
 
-  revealSound.volume = 0.01
-  revealSound.play()
-}
-
-function stopAnimation() {
-  showAnimation.value = false
-  demoItems.value.splice(0, demoItems.value.length)
-  startTranslation.value = false
-  randomTranslation.value = 0
+        showAnimation.value = false
+        demoItems.value.splice(0, demoItems.value.length)
+        startTranslation.value = false
+        randomTranslation.value = 0
+      }, 5500)
+    }, 100)
+  }, 2500)
 }
 
 function rollRarity() {

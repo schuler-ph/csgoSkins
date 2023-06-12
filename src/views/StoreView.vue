@@ -6,8 +6,10 @@
       class="xs:grid-cols-5 grid grid-cols-4 gap-10 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8"
     >
       <RouterLink :to="'/store/' + c.id" v-for="c in containers">
-        <div>{{ c.name }}</div>
-        <img :src="c.image" class="w-32" />
+        <div @click="sound('caseDrop')">
+          <div>{{ c.name }}</div>
+          <img :src="c.image" class="w-32" />
+        </div>
       </RouterLink>
     </div>
   </div>
@@ -22,8 +24,9 @@ import { getContainerType } from "@/data/enums/containerType"
 import { Rarity, getRarity } from "@/data/enums/rarity"
 import type { SkinTemplate } from "@/data/skins"
 import { getWeapon } from "@/data/enums/weaponName"
-
 import { useTemplateStore } from "@/stores/templateStore"
+import { sound } from "@/helper/soundHelper"
+
 const { containers } = useTemplateStore()
 const whatRarity: string[] = []
 
