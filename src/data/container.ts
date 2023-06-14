@@ -7,4 +7,5 @@ export interface ContainerTemplate extends ItemTemplate {
   firstSale: string | null
   contains: SkinTemplate[]
   containsRare: SkinTemplate[]
+  containsRareIndex: number | null
 }

@@ -29,7 +29,7 @@
     </button>
   </div>
   <div
-    class="openingAnimation panoramaBlur left-0 top-0 z-50 flex h-screen w-screen flex-col items-center"
+    class="openingAnimation panoramaBlur left-0 top-0 z-50 flex h-screen w-screen flex-col justify-center"
     :class="showAnimation ? 'fixed' : 'hidden'"
   >
     <div class="flex h-96 w-screen items-center bg-white/40">
@@ -110,6 +110,7 @@ const chances = [79.923, 15.985, 3.197, 0.639, 0.256]
 
 const lastItem = ref<SkinInstance | null>()
 function deleteLastItem() {
+  sound("close")
   lastItem.value = null
 }
 

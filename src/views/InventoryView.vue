@@ -59,6 +59,7 @@ const setInspectItem = (item: SkinInstance) => {
   sound("inspectItem")
 }
 const deleteInspectItem = () => {
+  sound("close")
   inspectItem.value = undefined
 }
 

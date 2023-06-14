@@ -2,6 +2,8 @@
   <div>
     <button @click="grabContainers">Pull up</button>
     <button @click="deleteContainer">Delete all</button>
+    <button @click="getUniqueRarePool">Get unique rare pool</button>
+    <button @click="deleteRaresFromCases">deleteRaresFromCases</button>
     <div
       class="xs:grid-cols-5 grid grid-cols-4 gap-10 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8"
     >
@@ -17,8 +19,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import cases from "./cases.json"
-import skins from "./skins.json"
+import casesFromApi from "./cases.json"
+import skinsFromApi from "./skins.json"
 import type { ContainerTemplate } from "@/data/container"
 import { getContainerType } from "@/data/enums/containerType"
 import { Rarity, getRarity } from "@/data/enums/rarity"
@@ -27,15 +29,45 @@ import { getWeapon } from "@/data/enums/weaponName"
 import { useTemplateStore } from "@/stores/templateStore"
 import { sound } from "@/helper/soundHelper"
 
-const { containers } = useTemplateStore()
-const whatRarity: string[] = []
+import cases from "@/data/templates/cases.json"
+import rares from "@/data/templates/rares.json"
+import type { RareCollection } from "@/data/rareCollection"
+
+const { containers, rareCollections } = useTemplateStore()
+
+const deleteRaresFromCases = () => {
+  containers.forEach((c) => c.containsRare.splice(0, c.containsRare.length))
+}
+
+const getUniqueRarePool = () => {
+  let alreadyContained = false
+  let index: number | null = null
+
+  containers.forEach((c) => {
+    rareCollections.forEach((uc) => {
+      if (JSON.stringify(uc.collection) === JSON.stringify(c.containsRare)) {
+        alreadyContained = true
+        index = uc.index
+      }
+    })
+
+    if (!alreadyContained) {
+      c.containsRareIndex = rareCollections.length
+      rareCollections.push({
+        index: rareCollections.length,
+        collection: c.containsRare,
+      })
+    } else {
+      c.containsRareIndex = index
+    }
+    alreadyContained = false
+    index = null
+  })
+}
 
 const deleteContainer = () => {
   containers.splice(0, containers.length)
-  // const index = containers.findIndex((obj) => obj.id === id)
-  // if (index !== -1) {
-  //   containers.splice(index, 1)
-  // }
+  rareCollections.splice(0, rareCollections.length)
 }
 
 const grabContainedItems = (currentContains: any, contains: any) => {
@@ -45,11 +77,7 @@ const grabContainedItems = (currentContains: any, contains: any) => {
     const currentItem = currentContains[cnt]
     if (doubledItems.includes(currentItem.name)) continue
 
-    const skin = skins.filter((s) => s.name === currentItem.name)
-
-    if (!whatRarity.includes(currentItem.rarity))
-      whatRarity.push(currentItem.rarity)
-
+    const skin = skinsFromApi.filter((s) => s.name === currentItem.name)
     if (skin.length > 1) {
       // multiple items with same name found
       doubledItems.push(currentItem.name)
@@ -161,28 +189,32 @@ const grabContainedItems = (currentContains: any, contains: any) => {
 }
 
 const grabContainers = () => {
-  for (let i = 0; i < cases.length; i++) {
-    // if (cases[i].id !== "crate-4061") continue
-    if (cases[i].type !== "Case") continue
+  cases.forEach((c) => {
+    containers.push(c as ContainerTemplate)
+  })
 
-    const currentContainer = cases[i]
-    const container: ContainerTemplate = {
-      id: currentContainer.id,
-      name: currentContainer.name,
-      image: currentContainer.image,
-      type: getContainerType(currentContainer.type),
-      firstSale: currentContainer.first_sale_date,
-      contains: [],
-      containsRare: [],
-    }
+  rares.forEach((r) => {
+    rareCollections.push(r as RareCollection)
+  })
 
-    grabContainedItems(currentContainer.contains, container.contains)
-    grabContainedItems(currentContainer.contains_rare, container.containsRare)
-
-    containers.push(container)
-  }
-
-  console.log(whatRarity)
+  // for (let i = 0; i < cases.length; i++) {
+  //   // if (cases[i].id !== "crate-4061") continue
+  //   if (cases[i].type !== "Case") continue
+  //   const currentContainer = cases[i]
+  //   const container: ContainerTemplate = {
+  //     id: currentContainer.id,
+  //     name: currentContainer.name,
+  //     image: currentContainer.image,
+  //     type: getContainerType(currentContainer.type),
+  //     firstSale: currentContainer.first_sale_date,
+  //     contains: [],
+  //     containsRare: [],
+  //     containsRareIndex: null,
+  //   }
+  //   grabContainedItems(currentContainer.contains, container.contains)
+  //   grabContainedItems(currentContainer.contains_rare, container.containsRare)
+  //   containers.push(container)
+  // }
 }
 </script>
 
