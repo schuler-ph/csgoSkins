@@ -1,40 +1,25 @@
-# csgoSkins
+# Nebula
 
-This template should help get you started developing with Vue 3 in Vite.
+<p align="center">
+<img src="src/assets/logo.svg" alt="Logo" width="100" height="100">
+  <h3 align="center">CSGO Case Simulator</h3>
+  <p align="center">
+    Save money and simulate your case openings
+    <br/>
+    <a href="https://github.com/schuler-ph/csgoSkins/issues">Report a bug or request a feature</a>
+  </p>
+</p>
 
-## Recommended IDE Setup
+## Description
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+A simple recreation of the inventory and case features from the game Counter Strike: Global Offensive.
+The UI represents the current (August 2023) version of the Panorama UI from the official game.
+In the application you can open any skin case and inspect the received item in your inventory.
 
-## Type Support for `.vue` Imports in TS
+## Screenshots and demonstration
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+<img src=".github/screenshots/Home.png" alt="Home">
+<img src=".github/screenshots/InventoryInspect.png" alt="InventoryInspect">
+<img src=".github/screenshots/InventoryWithFloat.png" alt="InventoryWithFloat">
+<img src=".github/screenshots/CasesAll.png" alt="CasesAll">
+<img src=".github/screenshots/OpenCase.webm" alt="OpenCase">

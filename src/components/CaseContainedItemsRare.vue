@@ -24,9 +24,21 @@
 
 <script setup lang="ts">
 import { type SkinTemplate } from "@/data/skins"
+import { onMounted, ref } from "vue"
+import { useTemplateStore } from "@/stores/templateStore"
 
-const props = defineProps({
-  contains: Array<SkinTemplate>,
+const { rareCollections } = useTemplateStore()
+
+const { containsRareIndex } = defineProps({
+  containsRareIndex: Number,
+})
+
+const contains = ref<Array<SkinTemplate>>([])
+
+onMounted(() => {
+  contains.value = rareCollections.filter(
+    (a) => a.index === containsRareIndex
+  )[0].collection
 })
 </script>
 

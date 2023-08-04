@@ -26,6 +26,10 @@
   .has-tooltip:hover .tooltip {
     @apply visible z-50;
   }
+
+  .panoramaButton {
+    @apply panoramaBlur2 panoramaBorder m-2 rounded-lg border-2 p-2 text-white;
+  }
 }
 
 @font-face {

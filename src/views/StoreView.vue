@@ -1,11 +1,13 @@
 <template>
   <div>
-    <button @click="grabContainers">Fetch cases</button>
-    <button @click="deleteContainer">Delete cases</button>
-    <button @click="getUniqueRarePool">
+    <button class="panoramaButton" @click="grabContainers">Fetch cases</button>
+    <button class="panoramaButton" @click="deleteContainer">
+      Delete cases
+    </button>
+    <button class="panoramaButton" @click="getUniqueRarePool">
       Get unique rare special item pools
     </button>
-    <button @click="deleteRaresFromCases">
+    <button class="panoramaButton" @click="deleteRaresFromCases">
       Delete redundant rare specials from cases
     </button>
     <div
@@ -225,11 +227,4 @@ const grabContainers = () => {
 }
 </script>
 
-<style scoped>
-button {
-  background-color: white;
-  margin: 1rem;
-  padding: 4px;
-  border-radius: 4px;
-}
-</style>
+<style scoped></style>

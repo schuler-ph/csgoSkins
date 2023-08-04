@@ -6,18 +6,16 @@
   </div>
   <CaseContainedItems
     :contains="container?.contains"
-    :container-contains-rare="container?.containsRare.length! > 0"
+    :container-contains-rare="container?.containsRareIndex !== null"
   />
-  <div v-if="container?.containsRare.length! > 0">
-    <button
-      @click="switchShowRareItems"
-      class="m-5 rounded-full border-2 border-dashed border-[black] bg-[#ffd9009b] p-1 text-[black]"
-    >
+  <div v-if="container?.containsRareIndex !== null">
+    <button @click="switchShowRareItems" class="panoramaButton">
+      <!-- class="m-5 rounded-full border-2 border-dashed border-[black] bg-[#ffd9009b] p-1 text-[black]" -->
       Show Rare Special Items
     </button>
     <CaseContainedItemsRare
       v-if="showRareItems"
-      :contains="container?.containsRare"
+      :containsRareIndex="container?.containsRareIndex"
     />
   </div>
   <div class="flex justify-center">

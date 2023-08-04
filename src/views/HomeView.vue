@@ -8,7 +8,13 @@
       <img src="@/assets/logo.svg" class="mx-3 h-[2vw] -scale-x-100" />
     </div>
   </div>
-  <div class="panoramaBlur mx-[5vw] flex justify-center">
-    <div class="h-[750px] w-[1500px]"></div>
-  </div>
+  <img
+    alt="bgAgent"
+    src="@/assets/ui/bg/agent.png"
+    class="ml-[38vw] mt-[7vw]"
+  />
+  <!-- <div class="mx-[5vw] flex justify-center">
+    <div class="h-[750px] w-[1500px]">
+    </div>
+  </div> -->
 </template>
