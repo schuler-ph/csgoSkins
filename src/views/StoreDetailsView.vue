@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8 flex w-full flex-col items-center">
+  <div class="flex w-full flex-col items-center pt-8">
     <div class="text-3xl font-bold text-gray-100">Unlock Container</div>
     <div class="text-2xl text-gray-200">Unlock {{ container?.name }}</div>
     <img class="w-3/12" :src="container?.image" />

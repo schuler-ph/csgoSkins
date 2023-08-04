@@ -136,7 +136,10 @@ import { sound } from "@/helper/soundHelper"
         <div
           class="panoramaBorder flex h-[11.5vw] w-[5vw] flex-col items-center border-b"
         >
-          <img class="mt-[0.85vw] w-[3.3vw]" src="@/assets/ui/chad.jpg" />
+          <img
+            class="mt-[0.85vw] w-[3.3vw]"
+            src="https://avatars.steamstatic.com/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_full.jpg"
+          />
           <img
             class="mt-[1.2vw] w-[2.8vw]"
             src="@/assets/ui/xp/Csgo-profile-rank-level1.webp"

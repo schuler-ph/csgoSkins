@@ -1,16 +1,23 @@
 <template>
   <div>
-    <button @click="grabContainers">Pull up</button>
-    <button @click="deleteContainer">Delete all</button>
-    <button @click="getUniqueRarePool">Get unique rare pool</button>
-    <button @click="deleteRaresFromCases">deleteRaresFromCases</button>
+    <button @click="grabContainers">Fetch cases</button>
+    <button @click="deleteContainer">Delete cases</button>
+    <button @click="getUniqueRarePool">
+      Get unique rare special item pools
+    </button>
+    <button @click="deleteRaresFromCases">
+      Delete redundant rare specials from cases
+    </button>
     <div
-      class="xs:grid-cols-5 grid grid-cols-4 gap-10 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8"
+      class="xs:grid-cols-5 grid w-[89vw] grid-cols-4 gap-10 p-[1vw] sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8"
     >
       <RouterLink :to="'/store/' + c.id" v-for="c in containers">
-        <div @click="sound('caseDrop')">
-          <div>{{ c.name }}</div>
-          <img :src="c.image" class="w-32" />
+        <div
+          @click="sound('caseDrop')"
+          class="panoramaBlur2 panoramaBorder flex min-h-[200px] flex-col justify-center rounded-lg border-2 p-3"
+        >
+          <img :src="c.image" />
+          <div class="text-center text-white">{{ c.name }}</div>
         </div>
       </RouterLink>
     </div>
@@ -218,4 +225,11 @@ const grabContainers = () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+button {
+  background-color: white;
+  margin: 1rem;
+  padding: 4px;
+  border-radius: 4px;
+}
+</style>
