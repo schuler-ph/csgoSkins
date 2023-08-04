@@ -22,4 +22,4 @@ In the application you can open any skin case and inspect the received item in y
 <img src=".github/screenshots/InventoryInspect.png" alt="InventoryInspect">
 <img src=".github/screenshots/InventoryWithFloat.png" alt="InventoryWithFloat">
 <img src=".github/screenshots/CasesAll.png" alt="CasesAll">
-<img src=".github/screenshots/OpenCase.webm" alt="OpenCase">
+<img src=".github/screenshots/OpenCase.gif" alt="OpenCase">
